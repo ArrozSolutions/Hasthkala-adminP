@@ -12,6 +12,13 @@ import { BiMenu, BiX } from 'react-icons/bi';
 
 const AdminLogin = () => {
 
+  const authenticate = localStorage.getItem('admin_authenticate');
+  useEffect(() => {
+    if(authenticate){
+      navigate('/');
+    }
+  }, [authenticate])
+
   const auth = useSelector(state =>state.admin);
   const successToast = () => {
     toast('Login Successfull', { position: toast.POSITION.TOP_CENTER })
@@ -178,9 +185,9 @@ const AdminLogin = () => {
                   <span className='cursor-pointer h-full w-1/2 flex justify-center items-center border-b-2 border-red-500 text-red-600' onClick={toggleMobileSignIn}>Sign In</span>
                 </div>
                 <div className='pl-10 pr-10 pt-6'>
-                  <label className='text-sm font-dmsans' htmlFor="">Email Address</label>
+                  <label className='text-sm font-dmsans text-left w-full flex' htmlFor="">Email Address</label>
                   <input type="text" className='border border-[#1a1a1d52] w-full h-11 mt-1 mb-4 text-sm text-gray pl-5 rounded' onChange={(e) => { setEmail(e.target.value) }} required />
-                  <label className='text-sm font-dmsans' htmlFor="">Password</label>
+                  <label className='text-sm font-dmsans text-left w-full flex' htmlFor="">Password</label>
                   <input type="password" className='border border-[#1a1a1d52] w-full h-11 mt-1 text-sm text-gray pl-5 rounded' onChange={(e) => { setPassword(e.target.value) }} required />
                   <button className='w-full h-11 bg-darkred font-dmsans uppercase text-[#ffffff] mt-5 rounded flex items-center justify-center' type='submit'>{loading ? <Spinner /> : `Sign In`}</button>
 

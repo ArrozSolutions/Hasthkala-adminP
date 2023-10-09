@@ -19,11 +19,12 @@ const Customers = () => {
   const [next, setNext] = useState(0);
 
   const auth = useSelector(state => state.admin);
+  const authenticate = localStorage.getItem('admin_authenticate');
   useEffect(() => {
-    if (!auth?.authenticate) {
-      navigate('/admin-login')
+    if(!authenticate){
+      navigate('/admin-login');
     }
-  }, [auth?.authenticate])
+  }, [authenticate])
 
 
   useEffect(() => {
@@ -52,7 +53,6 @@ const Customers = () => {
 
       })
     }
-    console.log(next, 'next')
   }
 
   const paginationPrev = (e) => {
@@ -66,7 +66,6 @@ const Customers = () => {
 
       })
     }
-    console.log(next, 'next')
   }
 
   const deleteCustomer = (cid) => {
@@ -85,7 +84,6 @@ const Customers = () => {
             <h1 className='font-dmsans text-lg font-semibold'>Cusotmers</h1>
             <div className='w-full border rounded-lg mt-5 h-20 items-center flex pl-4 pt-4 pb-4'>
               <button className='border h-full w-[100px] rounded-md mr-3 flex justify-center items-center text-sm'><span className='mr-2 rotate-180'><BiDownload size={15} /></span> Export</button>
-              <button className='border h-full w-[100px] rounded-md flex justify-center items-center text-sm'><span className='mr-2'><BiDownload size={15} /></span>Import</button>
             </div>
             <div className='w-full border rounded-lg mt-5 h-20 items-center flex pl-4 pt-4 pb-4 pr-5'>
               <input type="text" placeholder='Search by name/email/phone' className='border rounded-lg w-full border-[#1a1a1d45] text-sm h-12 pl-4 active:border-[#1a1a1d45]' />

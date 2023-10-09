@@ -62,6 +62,9 @@ const AdminReducer = (state = initState, action) => {
             state = {
                 ...state,
                 recentorders: action.payload.recentorders,
+                delivered: action.payload.delivered,
+                pending: action.payload.pending,
+                proccessing: action.payload.proccessing,
             }
             break;
         case adminGetUserInfoConstants.ADMIN_USER_INFO_SUCCESS:

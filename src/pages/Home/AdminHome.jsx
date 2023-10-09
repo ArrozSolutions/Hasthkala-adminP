@@ -1,23 +1,24 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const AdminHome = () => {
 
   const auth = useSelector(state => state.admin)
   const navigate = useNavigate();
-
+  
+  const authenticate = localStorage.getItem('admin_authenticate');
   useEffect(() => {
-    if(!auth?.authenticate){
+    if(!authenticate){
       navigate('/admin-login');
     }
-  }, [auth?.authenticate])
+  }, [authenticate])
 
   useEffect(() => {
-    if(auth?.authenticate){
-      navigate('/admin-dashboard');
-    }
-  }, [auth?.authenticate])
+   if(authenticate){
+    navigate('/admin-dashboard');
+   }
+  }, [authenticate])
   
   return (
     <div>AdminHome</div>

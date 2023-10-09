@@ -15,6 +15,8 @@ import AddCategory from './pages/Admin/AddCategory';
 import AdminUser from './pages/Admin/AdminUser';
 import AdminHome from './pages/Home/AdminHome';
 import AdminLogin from './pages/Login/AdminLogin';
+import AdminCoupons from './pages/Admin/AdminCoupons';
+import AddCoupons from './pages/Admin/AddCoupons';
 
 function App() {
   return (
@@ -30,9 +32,11 @@ function App() {
         <Route exact path={"/admin-settings"} element={<AdminSettings />} />
         <Route exact path={"/admin-staff"} element={<OurStaff />} />
         <Route exact path={"/admin-add-product"} element={<AddProducts />} />
+        <Route exact path={"/admin-add-coupons"} element={<AddCoupons />} />
         <Route exact path={"/admin-add-category"} element={<AddCategory />} />
         <Route exact path={"/admin-user-info/:id"} element={<AdminUser />} />
         <Route exact path={"/admin-login"} element={<AdminLogin />} />
+        <Route exact path={"/admin-coupons"} element={<AdminCoupons />} />
       </Routes>
     </div>
   );

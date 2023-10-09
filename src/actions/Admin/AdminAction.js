@@ -1,5 +1,5 @@
 import axios from "../../helpers/axios";
-import { addToCartConstants, adminAllCategoryConstant, adminAllCategoryParentConstant, adminAllOrdersConstant, adminAllProductConstant, adminCreateCategoryConstants, adminCreateProductConstants, adminCustomersConstants, adminDeleteCategoryConstants, adminDeleteCustomerConstants, adminDeleteProductConstants, adminDeleteRecentOrderConstants, adminGetUserInfoConstants, adminRecentOrderConstants, getCartDataConstants, getSavedConstants, quantityEditConstants, removeCartDataConstants, removeSavedDataConstants, saveConstants } from "../../constant/constant";
+import { addToCartConstants, adminAllCategoryConstant, adminAllCategoryParentConstant, adminAllOrdersConstant, adminAllProductConstant, adminCreateCategoryConstants, adminCreateProductConstants, adminCustomersConstants, adminDeleteCategoryConstants, adminDeleteCustomerConstants, adminDeleteProductConstants, adminDeleteRecentOrderConstants, adminGetUserInfoConstants, adminRecentOrderConstants, changeStatusConstant, createCouponConstant, deleteCouponConstant, getCartDataConstants, getCouponConstant, getSavedConstants, quantityEditConstants, removeCartDataConstants, removeSavedDataConstants, saveConstants } from "../../constant/constant";
 
 
 export const AdminCreateProduct = (productObj) => {
@@ -59,11 +59,34 @@ export const AdminRecentOrders = () => {
     dispatch({ type: adminRecentOrderConstants.ADMIN_RECENTORDER_REQUEST });
     const res = await axios.get(`/admin-recent-orders`)
     if (res.status === 200) {
-      const { recentorders } = res.data;
+      const { recentorders,delivered,pending,proccessing} = res.data;
       dispatch({
         type: adminRecentOrderConstants.ADMIN_RECENTORDER_SUCCESS,
         payload: {
           recentorders,
+          delivered,
+          pending,
+          proccessing
+        },
+      });
+    }
+  };
+
+};
+
+export const changeStatusAction = (sid,status) => {
+  return async (dispatch) => {
+    dispatch({ type: changeStatusConstant.CHANGE_STATUS_REQUEST});
+    const res = await axios.post('/change-status',{
+        sid,
+        status
+    })
+    if (res.status === 200) {
+      const { message} = res.data;
+      dispatch({
+        type: changeStatusConstant.CHANGE_STATUS_SUCCESS,
+        payload: {
+          message
         },
       });
     }
@@ -243,10 +266,12 @@ export const AdminAllCategoryParent = () => {
 
 };
 
-export const AdminAllCategory = () => {
+export const AdminAllCategory = (skip) => {
   return async (dispatch) => {
     dispatch({ type: adminAllCategoryConstant.ADMIN_CATEGORY_REQUEST });
-    const res = await axios.get(`/admin-all-category`)
+    const res = await axios.post(`/admin-all-category`,{
+      skip
+    })
     if (res.status === 200) {
       const { category, totalcategory } = res.data;
       dispatch({
@@ -260,3 +285,61 @@ export const AdminAllCategory = () => {
   };
 
 };
+
+export const deleteCouponAction = (cid) => {
+  return async (dispatch) => {
+    dispatch({ type: deleteCouponConstant.DELETE_COUPON_REQUEST });
+    const res = await axios.post(`/delete-coupon`,{
+      cid
+    })
+    if (res.status === 200) {
+      const { message,coupon} = res.data;
+      dispatch({
+        type: deleteCouponConstant.DELETE_COUPON_SUCCESS,
+        payload: {
+          coupon
+        },
+      });
+    }
+  };
+};
+
+
+export const createCouponAction = (coupon) => {
+  console.log(coupon,'cop')
+  return async (dispatch) => {
+    dispatch({ type: createCouponConstant.CREATE_COUPON_REQUEST });
+    const res = await axios.post(`/create-coupon`,{
+      ...coupon
+    })
+    if (res.status === 200) {
+      const { coupon} = res.data;
+      dispatch({
+        type: createCouponConstant.CREATE_COUPON_SUCCESS,
+        payload: {
+          coupon
+        },
+      });
+    }
+  };
+};
+
+export const getCouponAction = (skip) => {
+  return async (dispatch) => {
+    dispatch({ type: getCouponConstant.GET_COUPON_REQUEST });
+    const res = await axios.post('/get-coupon',{
+      skip
+    })
+    if (res.status === 200) {
+      const { coupon,totalcoupons} = res.data;
+      dispatch({
+        type: getCouponConstant.GET_COUPON_SUCCESS,
+        payload: {
+          coupon,
+          totalcoupons
+        },
+      });
+    }
+  };
+};
+

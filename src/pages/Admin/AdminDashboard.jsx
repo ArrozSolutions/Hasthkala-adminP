@@ -5,27 +5,26 @@ import { useNavigate } from 'react-router-dom';
 import AdminSidebar from '../../components/Admin/SideBar/AdminSidebar';
 import AdminTopbar from '../../components/Admin/TopBar/AdminTopbar';
 import { BiCart, BiCheck, BiCoinStack, BiEdit, BiLogoStackOverflow, BiRotateRight, BiSolidTruck, BiTrash } from 'react-icons/bi';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut } from "react-chartjs-2";
-import { Chart } from 'react-charts'
-import ReactApexCharts from 'react-apexcharts';
-import { AdminAllOrders, AdminDeleteRecentOrders, AdminRecentOrders } from '../../actions/Admin/AdminAction';
+import { AdminAllOrders, AdminDeleteRecentOrders, AdminRecentOrders, changeStatusAction } from '../../actions/Admin/AdminAction';
 import { useState } from 'react';
 
 const AdminDashboard = () => {
-
 
   const [recentorders, setRecentOrders] = useState(null);
   const [ordersCount, setOrdersCount] = useState(null);
   const orders = useSelector(state => state.admin.recentorders);
   const allorderscount = useSelector(state => state.admin.totalorders);
+  const delivered = useSelector(state => state.admin.delivered);
+  const pending = useSelector(state => state.admin.pending);
+  const proccessing = useSelector(state => state.admin.proccessing);
 
   const auth = useSelector(state => state.admin);
+  const authenticate = localStorage.getItem('admin_authenticate');
   useEffect(() => {
-    if (!auth?.authenticate) {
-      navigate('/admin-login')
+    if (!authenticate) {
+      navigate('/admin-login');
     }
-  }, [auth?.authenticate])
+  }, [authenticate])
 
   useEffect(() => {
     if (orders) {
@@ -35,59 +34,6 @@ const AdminDashboard = () => {
       setOrdersCount(allorderscount);
     }
   }, [orders, allorderscount])
-
-
-  ChartJS.register(ArcElement, Tooltip, Legend);
-
-  const data = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green'],
-    datasets: [
-      {
-        label: '# of Votes',
-        data: [12, 19, 3, 5],
-        outerWidth: 40,
-        innerWidth: 40,
-        backgroundColor: [
-          'red',
-          'blue',
-          'yellow',
-          'green',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-
-  const options = {
-    chart: {
-      height: 350,
-      type: 'line',
-      zoom: {
-        enabled: false
-      }
-    },
-    dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      curve: 'straight'
-    },
-    grid: {
-      row: {
-        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-        opacity: 0.5
-      },
-    },
-    xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-    }
-  };
-
-  const series = [{
-    name: "Desktops",
-    data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-  }]
 
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -106,6 +52,12 @@ const AdminDashboard = () => {
 
   const deleteRecentOrder = (oid) => {
     dispatch(AdminDeleteRecentOrders(oid)).then(() => {
+      dispatch(AdminRecentOrders());
+    })
+  }
+
+  const handleStatusChange=(sid,status)=>{
+    dispatch(changeStatusAction(sid,status)).then(()=>{
       dispatch(AdminRecentOrders());
     })
   }
@@ -156,7 +108,11 @@ const AdminDashboard = () => {
                 </div>
                 <div className='flex flex-col justify-center h-full'>
                   <p className='text-sm font-dmsans'>Orders Pending</p>
-                  <p className='text-2xl font-bold text-[#1a1a1d]'>00</p>
+                  <p className='text-2xl font-bold text-[#1a1a1d]'>
+                    {
+                      pending < 10 ? `0${pending}` : pending
+                    }
+                  </p>
                 </div>
               </div>
               <div className='flex  w-[300px] rounded-xl pl-4 h-[75px] border  items-center '>
@@ -165,7 +121,11 @@ const AdminDashboard = () => {
                 </div>
                 <div className='flex flex-col justify-center h-full'>
                   <p className='text-sm font-dmsans'>Orders Processing</p>
-                  <p className='text-2xl font-bold text-[#1a1a1d]'>00</p>
+                  <p className='text-2xl font-bold text-[#1a1a1d]'>
+                    {
+                      proccessing < 10 ? `0${proccessing}` : proccessing
+                    }
+                  </p>
                 </div>
               </div>
               <div className='flex  w-[300px] rounded-xl pl-4 h-[75px] border  items-center '>
@@ -174,29 +134,16 @@ const AdminDashboard = () => {
                 </div>
                 <div className='flex flex-col justify-center h-full'>
                   <p className='text-sm font-dmsans'>Orders Delivered</p>
-                  <p className='text-2xl font-bold text-[#1a1a1d]'>00</p>
+                  <p className='text-2xl font-bold text-[#1a1a1d]'>
+                    {
+                      delivered < 10 ? `0${delivered}` : delivered
+                    }
+                  </p>
                 </div>
               </div>
             </div>
 
-
-            <div className='flex justify-between items-center mt-8'>
-              <div className='w-[611px] rounded-xl h-[450px] border flex flex-col  items-center pt-5 pl-5'>
-                <p className='font-dmsans text-lg w-full flex mb-10'>Weekly Sales</p>
-                <div className='w-full p-5 mb-5'>
-                  <ReactApexCharts options={options} series={series} type='line' />
-                </div>
-              </div>
-              <div className='w-[611px] rounded-xl h-[450px] border flex flex-col  items-center pt-5 pl-5'>
-                <p className='font-dmsans text-lg w-full flex mb-10'>Best Selling Products</p>
-                <div >
-                  <Doughnut data={data} />
-                </div>
-              </div>
-            </div>
-
-
-            <div className='flex flex-col mt-5'>
+            <div className='flex flex-col mt-10'>
               <h1 className='font-dmsans text-lg'>Recent Orders</h1>
               {/* RECENT ORDERS TABLE  */}
               <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-8">
@@ -249,15 +196,20 @@ const AdminDashboard = () => {
                           ₹{order?.totalprice}
                         </td>
                         <td class="px-4 py-4">
-                          <span className={`${order?.status == 'Delivered' ? 'bg-[#00b5186e]' : ''} ${order?.status == 'Pending' ? 'bg-[#cccf17b1]' : ''} rounded-xl px-2 font-semibold text-[#000000]`}>
+                          <span className={`${order?.status == 'Delivered' ? 'bg-[#00b5186e]' : ''} ${order?.status == 'Pending' ? 'bg-[#cf5417b1]' : ''} ${order?.status == 'Proccessing' ? 'bg-[#cccf17b1]' : ''} rounded-xl px-2 font-semibold text-[#000000]`}>
                             {order?.status}
                           </span>
                         </td>
-                        <td class="px-4 py-4 flex">
-                          <span className='mb-2 cursor-pointer hover:scale-110 duration-300 transition-all'><BiEdit size={20} className='mr-2' color='blue' /></span>
+                        <td class="px-4 py-4 flex items-center">
                           <span className='mb-2 cursor-pointer hover:scale-110 duration-300 transition-all' onClick={() => {
                             deleteRecentOrder(order?._id);
                           }}><BiTrash size={20} color='darkred' /></span>
+                          <select name="" id="" className='ml-3 h-8 text-xs flex items-center justify-center  border border-[#1a1a1d4a] rounded' onChange={(e)=>{handleStatusChange(order?._id,e.target.value)}}>
+                            <option value="" className='relative' hidden defaultChecked={true}>Status</option>
+                            <option value="Delivered" className='relative'>Delivered</option>
+                            <option value="Pending" className='relative'>Pending</option>
+                            <option value="Proccessing" className='relative'>Proccessing</option>
+                          </select>
                         </td>
 
                       </tr>

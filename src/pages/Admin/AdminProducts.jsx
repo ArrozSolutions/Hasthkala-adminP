@@ -18,13 +18,14 @@ const AdminProducts = () => {
   const allproductscount = useSelector(state => state.admin.totalproducts);
 
   const auth = useSelector(state => state.admin);
+  const authenticate = localStorage.getItem('admin_authenticate');
   useEffect(() => {
-    if (!auth?.authenticate) {
-      navigate('/admin-login')
+    if(!authenticate){
+      navigate('/admin-login');
     }
-  }, [auth?.authenticate])
+  }, [authenticate])
 
-
+  
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(AdminAllProducts());

@@ -12,12 +12,13 @@ const AdminSidebar = ({ name,show }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userSignOut = () => {
+        localStorage.clear();
+        navigate('/admin-login')
     }
 
     const handleDropDown = () => {
         setDropdown(!dropdown);
     }
-
 
 
     return (
@@ -63,7 +64,7 @@ const AdminSidebar = ({ name,show }) => {
                                 <Link to={'/admin-categories'}><li>
                                     <p class={`flex items-center w-full p-2  ${name == 'categories' ? 'text-darkred' : 'text-gray-700'} transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700`}>Category</p>
                                 </li></Link>
-                                <Link><li>
+                                <Link to={'/admin-coupons'}><li>
                                     <p class={`flex items-center w-full p-2  ${name == 'coupons' ? 'text-darkred' : 'text-gray-700'} transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700`}>Coupons</p>
                                 </li></Link>
                             </ul>

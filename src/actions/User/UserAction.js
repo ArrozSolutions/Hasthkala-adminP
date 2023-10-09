@@ -25,6 +25,10 @@ export const adminLogin = (user) => {
         })
         if (res.status === 200) {
             const { user } = res.data;
+            localStorage.setItem('admin_id',user?.user?._id);
+            localStorage.setItem('admin_fullname',user?.user?.fullname);
+            localStorage.setItem('admin_email',user?.user?.email);
+            localStorage.setItem('admin_authenticate',user?.user?.authenticate);
             dispatch({
                 type: userLoginConstants.LOGIN_SUCCESS,
                 payload: {
@@ -44,6 +48,10 @@ export const adminUpdate = (user) => {
         });
         if (res.status === 200) {
             const { user } = res.data;
+            localStorage.setItem('admin_id',user?.user?._id);
+            localStorage.setItem('admin_fullname',user?.user?.fullname);
+            localStorage.setItem('admin_email',user?.user?.email);
+            localStorage.setItem('admin_authenticate',user?.user?.authenticate);
             dispatch({
                 type: userUpdateConstants.UPDATE_SUCCESS,
                 payload: {
@@ -69,6 +77,11 @@ export const adminLoginWithOTP = (phone) => {
         });
         if (res.status === 200) {
             const { user } = res.data;
+            console.log(user,'user');
+            localStorage.setItem('admin_id',user?._id);
+            localStorage.setItem('admin_fullname',user?.fullname);
+            localStorage.setItem('admin_email',user?.email);
+            localStorage.setItem('admin_authenticate',true);
             dispatch({
                 type: userLoginConstants.LOGIN_SUCCESS,
                 payload: {
