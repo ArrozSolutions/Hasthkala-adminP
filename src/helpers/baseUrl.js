@@ -1,0 +1,1 @@
+export const api = "https://backend.hhkgifts.com/api";
