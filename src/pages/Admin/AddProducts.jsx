@@ -12,6 +12,7 @@ import { toast, ToastContainer } from 'react-toastify'
 const AddProducts = () => {
     const navigate = useNavigate();
     const [name, setName] = useState(null);
+    const [trending, setTrending] = useState(false);
     const [description, setDescription] = useState(null);
     const [summary, setSummary] = useState(null);
     const [price, setPrice] = useState(null);
@@ -66,7 +67,8 @@ const AddProducts = () => {
     const handleCheckboxChange = () => {
         // if (name && category && parentcategory && description && summary && price && images) {
         setIsChecked(!isChecked);
-        setVariantPage(!variantPage);
+        errorToast("Temporarily Closed!")
+        // setVariantPage(!variantPage);
         // } else {
         // errorToast('Fill all Marked Fields');
         // }
@@ -129,10 +131,13 @@ const AddProducts = () => {
 
     const handleAddProduct = (e) => {
         e.preventDefault();
-        if (name && price && description && quantity && category && parentcategory && images && countyoforigin && summary && material) {
+        console.log(name, price, description, quantity, category, parentcategory, images, countyoforigin, material);
+        if (name && price && description && quantity && category && parentcategory && images && countyoforigin && material) {
+            errorToast("Adding Product Please Wait...")
             if (childcategory == null) {
                 const productObj = {
                     name,
+                    trending,
                     price,
                     description,
                     quantity,
@@ -149,33 +154,35 @@ const AddProducts = () => {
                     personalizationType
                 }
                 dispatch(AdminCreateProduct(productObj)).then(() => {
+                    errorToast("Adding Product Please Wait...")
                     navigate('/admin-products')
                 })
             } else {
-                errorToast('Fill all the marked fields')
+                const productObj = {
+                    name,
+                    price,
+                    trending,
+                    description,
+                    quantity,
+                    discountprice,
+                    category,
+                    parentcategory,
+                    childcategory,
+                    tags,
+                    countyoforigin,
+                    material,
+                    dimensions,
+                    images,
+                    haveVariants: false,
+                    havePersonalization,
+                    personalizationType
+                }
+                dispatch(AdminCreateProduct(productObj)).then(() => {
+                    navigate('/admin-products')
+                })
             }
         } else {
-            const productObj = {
-                name,
-                price,
-                description,
-                quantity,
-                discountprice,
-                category,
-                parentcategory,
-                childcategory,
-                tags,
-                countyoforigin,
-                material,
-                dimensions,
-                images,
-                haveVariants: false,
-                havePersonalization,
-                personalizationType
-            }
-            dispatch(AdminCreateProduct(productObj)).then(() => {
-                navigate('/admin-products')
-            })
+            errorToast('Fill all the marked fields')
         }
     }
 
@@ -186,7 +193,7 @@ const AddProducts = () => {
                 name,
                 price,
                 description,
-                summary,
+                trending,
                 quantity,
                 discountprice,
                 category,
@@ -202,6 +209,7 @@ const AddProducts = () => {
                 personalizationType,
             }
             dispatch(AdminCreateProduct(productObj)).then(() => {
+                errorToast("Adding Product Please Wait...")
                 navigate('/admin-products')
             })
         } else {
@@ -209,7 +217,7 @@ const AddProducts = () => {
                 name,
                 price,
                 description,
-                summary,
+                trending,
                 quantity,
                 discountprice,
                 category,
@@ -226,6 +234,7 @@ const AddProducts = () => {
                 personalizationType,
             }
             dispatch(AdminCreateProduct(productObj)).then(() => {
+                errorToast("Adding Product Please Wait...")
                 navigate('/admin-products')
             })
         }
@@ -359,6 +368,16 @@ const AddProducts = () => {
                                         <div className='items-center justify-between flex mt-5 text-black font-dmsans '>
                                             <p className='mr-10 flex'>Description<p className='text-darkred'>*</p></p>
                                             <textarea onChange={(e) => { setDescription(e.target.value) }} name="" className='w-[500px] text-sm rounded-lg bg-[#1a1a1d0d] border-[#1a1a1d15] h-40' placeholder='Product Description' required></textarea>
+                                        </div>
+                                        <div className='items-center justify-between flex mt-10 text-black font-dmsans'>
+                                            <p className='mr-10 flex'>Trending?</p>
+                                            <input type="checkbox" onChange={(e) => {
+                                                if (e.target.value == "on" && trending == false) {
+                                                    setTrending(true);
+                                                } else {
+                                                    setTrending(false);
+                                                }
+                                            }}/>
                                         </div>
                                         <div className='items-center justify-between flex mt-10 text-black font-dmsans'>
                                             <p className='mr-10 flex'>Price <p className='text-darkred'>*</p></p>

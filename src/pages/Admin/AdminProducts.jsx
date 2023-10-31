@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { AdminAllCategory, AdminAllCategoryParent, AdminAllProducts, AdminDeleteProductOrders } from '../../actions/Admin/AdminAction';
 import { Link, useNavigate } from 'react-router-dom';
+import {toast,ToastContainer} from 'react-toastify';
 
 const AdminProducts = () => {
 
@@ -27,7 +28,9 @@ const AdminProducts = () => {
     }
   }, [authenticate])
 
-
+  const successToast=(msg)=>{
+    toast(msg,{position:'top-center'});
+  }
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(AdminAllProducts(next, null, null));
@@ -113,14 +116,6 @@ const AdminProducts = () => {
           <AdminTopbar />
           <div className='flex flex-col pt-5 pl-5 pr-10'>
             <h1 className='font-dmsans text-lg font-semibold'>Products</h1>
-            <div className='w-full border rounded-lg mt-5 h-20 items-center flex pl-4 pt-4 pb-4 justify-between pr-5'>
-              <div className='flex h-10'>
-                <button className='border h-full w-[100px] rounded-md mr-3 flex justify-center items-center text-sm'><span className='mr-2 rotate-180'><BiDownload size={15} /></span> Export</button>
-                <button className='border h-full w-[100px] rounded-md flex justify-center items-center text-sm'><span className='mr-2'><BiDownload size={15} /></span>Import</button>
-              </div>
-              <Link to={'/admin-add-product'}><button className='text-white h-10 hover:scale-110 transition-all duration-300 w-[200px] rounded-md  flex justify-center items-center text-sm font-dmsans bg-darkred'>Add Product<span className='ml-2'><BiPlus size={15} /></span></button></Link>
-
-            </div>
 
             <div className='w-full border rounded-lg mt-5 h-20 items-center flex pl-4 pt-4 pb-4 justify-between pr-5'>
               <input onChange={(e) => { searchProduct(e.target.value)}} type="text" className='bg-[#1a1a1d12] border-[#1a1a1d00] text-sm font-dmsans pl-3 rounded-lg h-12 w-[360px]' placeholder='Search by name' />
@@ -133,12 +128,9 @@ const AdminProducts = () => {
                   ))
                 }
               </select>
-              <select name="" className='bg-[#1a1a1d12] border-[#1a1a1d00] font-dmsans text-sm pl-3 rounded-lg h-12 w-[360px]' id="">
-                <option value="" hidden defaultChecked={true}>Sort</option>
-                <option value="pricelowtohigh">Price: Low to High</option>
-                <option value="pricehightolow">Price: High to Low</option>
-                <option value="pricehightolow">Latest Added</option>
-              </select>
+              <Link to={'/admin-add-product'}><button className='text-white h-10 hover:scale-110 transition-all duration-300 w-[200px] rounded-md  flex justify-center items-center text-sm font-dmsans bg-darkred'>Add Product<span className='ml-2'><BiPlus size={15} /></span></button></Link>
+
+
             </div>
             <div className='flex-col mt-5'>
 
@@ -184,7 +176,7 @@ const AdminProducts = () => {
                           ₹{product?.price}
                         </td>
                         <td class="px-6 py-4 font-semibold">
-                          {(products?.discountprice) || 'Not Available'}
+                          {(product?.discountprice != null)?product.discountprice:'Not Available'}
                         </td>
                         <td class="px-6 py-4">
                           {product?.quantity}
@@ -197,6 +189,7 @@ const AdminProducts = () => {
                         <td class="px-4 py-4 flex">
                           <span className='mb-2 cursor-pointer hover:scale-110 duration-300 transition-all'><BiEdit size={20} className='mr-2' color='blue' /></span>
                           <span className='mb-2 cursor-pointer hover:scale-110 duration-300 transition-all' onClick={() => {
+                            successToast("Deleting Product Please Wait")
                             deleteProduct(product?._id);
                           }}><BiTrash size={20} color='darkred' /></span>
                         </td>
@@ -223,6 +216,7 @@ const AdminProducts = () => {
           </div>
         </div>
       </div>
+      <ToastContainer/>
     </>
   )
 }

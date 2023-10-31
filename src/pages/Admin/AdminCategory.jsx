@@ -6,6 +6,7 @@ import Img from '../../assets/cat2.jpg';
 import { AdminAllCategory, AdminDeleteCategoryOrders } from '../../actions/Admin/AdminAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import {toast,ToastContainer} from 'react-toastify';
 
 const AdminCategory = () => {
 
@@ -21,6 +22,11 @@ const AdminCategory = () => {
       navigate('/admin-login');
     }
   }, [authenticate])
+
+  const successToast=(msg)=>{
+    toast(msg,{position:'top-center'});
+  }
+
 
 
   const dispatch = useDispatch();
@@ -88,11 +94,11 @@ const AdminCategory = () => {
           <AdminTopbar />
           <div className='flex flex-col pt-5 pl-5 pr-10'>
             <h1 className='font-dmsans text-lg font-semibold'>Category</h1>
-            <div className='w-full border rounded-lg mt-5 h-20 items-center flex pl-4 pt-4 pb-4 justify-between pr-5'>
-              <div className='flex h-10'>
+            <div className='w-full border rounded-lg mt-5 h-20 items-center flex pl-4 pt-4 pb-4 justify-end pr-5'>
+              {/* <div className='flex h-10'>
                 <button className='border h-full w-[100px] rounded-md mr-3 flex justify-center items-center text-sm'><span className='mr-2 rotate-180'><BiDownload size={15} /></span> Export</button>
                 <button className='border h-full w-[100px] rounded-md flex justify-center items-center text-sm'><span className='mr-2'><BiDownload size={15} /></span>Import</button>
-              </div>
+              </div> */}
               <Link to={'/admin-add-category'}><button className='text-white h-11 hover:scale-110 transition-all duration-300 w-[200px] rounded-md flex justify-center items-center text-sm font-dmsans  bg-darkred'>Add Category<span className='ml-2'><BiPlus size={15} /></span></button></Link>
 
             </div>
@@ -143,6 +149,7 @@ const AdminCategory = () => {
                           <td class="px-4 py-4 flex">
                             <span className='mb-2 cursor-pointer hover:scale-110 duration-300 transition-all'><BiEdit size={20} className='mr-2' color='blue' /></span>
                             <span className='mb-2 cursor-pointer hover:scale-110 duration-300 transition-all' onClick={() => {
+                              successToast("Deleting Category Please Wait")
                               deleteCategory(cat?._id);
                             }}><BiTrash size={20} color='darkred' /></span>
                           </td>
@@ -169,6 +176,7 @@ const AdminCategory = () => {
           </div>
         </div>
       </div>
+      <ToastContainer/>
     </>
   )
 }

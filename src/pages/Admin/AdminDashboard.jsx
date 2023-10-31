@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import AdminSidebar from '../../components/Admin/SideBar/AdminSidebar';
 import AdminTopbar from '../../components/Admin/TopBar/AdminTopbar';
-import { BiCart, BiCheck, BiCoinStack, BiEdit, BiLogoStackOverflow, BiRotateRight, BiSolidTruck, BiTrash } from 'react-icons/bi';
+import { BiCart, BiCheck, BiCoinStack, BiEdit, BiLogoStackOverflow, BiRotateRight, BiSearch, BiSolidTruck, BiTrash } from 'react-icons/bi';
 import { AdminAllOrders, AdminDashboardAction, AdminDeleteRecentOrders, AdminRecentOrders, changeStatusAction } from '../../actions/Admin/AdminAction';
 import { useState } from 'react';
+import {toast,ToastContainer} from 'react-toastify'
 
 const AdminDashboard = () => {
 
@@ -26,6 +27,10 @@ const AdminDashboard = () => {
       navigate('/admin-login');
     }
   }, [authenticate])
+
+  const successToast=(msg)=>{
+    toast(msg,{position:'top-center'});
+  }
 
   useEffect(() => {
     if (orders) {
@@ -202,8 +207,18 @@ const AdminDashboard = () => {
                         </td>
                         <td class="px-4 py-4 flex items-center">
                           <span className='mb-2 cursor-pointer hover:scale-110 duration-300 transition-all' onClick={() => {
+                            navigate('/show-order',{
+                              state:{
+                                order
+                              }
+                            })
+                          }}><BiSearch size={20} color='blue' /></span> 
+                          
+                          <span className='mb-2 cursor-pointer hover:scale-110 duration-300 transition-all' onClick={() => {
+                            successToast("Deleting Order Please Wait...");
                             deleteRecentOrder(order?._id);
                           }}><BiTrash size={20} color='darkred' /></span>
+
                           <select name="" id="" className='ml-3 h-8 text-xs flex items-center justify-center  border border-[#1a1a1d4a] rounded' onChange={(e)=>{handleStatusChange(order?._id,e.target.value)}}>
                             <option value="" className='relative' hidden defaultChecked={true}>Status</option>
                             <option value="Delivered" className='relative'>Delivered</option>

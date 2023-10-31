@@ -1,12 +1,14 @@
 import React from 'react'
 import AdminSidebar from '../../components/Admin/SideBar/AdminSidebar';
 import AdminTopbar from '../../components/Admin/TopBar/AdminTopbar';
-import { BiDownload, BiEdit, BiTrash } from 'react-icons/bi';
+import { BiDownload, BiEdit, BiSearch, BiSearchAlt2, BiTrash } from 'react-icons/bi';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { AdminAllOrders, AdminDeleteRecentOrders, AdminRecentOrders, changeStatusAction } from '../../actions/Admin/AdminAction';
 import { useNavigate } from 'react-router-dom';
+import {toast,ToastContainer} from 'react-toastify';
+
 const AdminOrders = () => {
 
   const navigate = useNavigate();
@@ -27,6 +29,10 @@ const AdminOrders = () => {
   useEffect(() => {
     dispatch(AdminAllOrders(0, null, null));
   }, [dispatch, AdminAllOrders])
+
+  const successToast=(msg)=>{
+    toast(msg,{position:'top-center'});
+  }
 
   useEffect(() => {
     if (allorders) {
@@ -164,13 +170,21 @@ const AdminOrders = () => {
                             ₹{order?.totalprice}
                           </td>
                           <td class="px-6 py-4">
-                            <span className='bg-[#00b5186e] rounded-xl px-2 font-semibold text-[#218a2f]'>
-                              {order?.status}
-                            </span>
+                          <span className={`${order?.status == 'Delivered' ? 'bg-[#00b5186e]' : ''} ${order?.status == 'Pending' ? 'bg-[#ff55007c]' : ''} ${order?.status == 'Proccessing' ? 'bg-[#cccf17b1]' : ''} rounded px-2 font-semibold text-[#000000] py-1`}>
+                            {order?.status}
+                          </span>
                           </td>
                           <td class="px-4 py-4 flex">
                             {/* <span className='mb-2 cursor-pointer hover:scale-110 duration-300 transition-all'><BiEdit size={20} className='mr-2' color='blue' /></span> */}
                             <span className='mb-2 cursor-pointer hover:scale-110 duration-300 transition-all' onClick={() => {
+                             navigate('/show-order',{
+                              state:{
+                                order
+                              }
+                             })
+                            }}><BiSearch size={20} color='blue' /></span>
+                            <span className='mb-2 cursor-pointer hover:scale-110 duration-300 transition-all' onClick={() => {
+                              successToast("Deleting Order Please Wait")
                               deleteOrder(order?._id);
                             }}><BiTrash size={20} color='darkred' /></span>
                             <select name="" id="" className='ml-3 h-8 text-xs flex items-center justify-center  border border-[#1a1a1d4a] rounded' onChange={(e) => { handleStatusChangeOnChange(order?._id, e.target.value) }}>
@@ -203,6 +217,7 @@ const AdminOrders = () => {
           </div>
         </div>
       </div>
+      <ToastContainer/>
     </>
   )
 }

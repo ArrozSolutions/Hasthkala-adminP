@@ -31,7 +31,7 @@ const AddCoupons = () => {
     const handleAddCoupon=(e)=>{
         e.preventDefault();
         const coupon ={
-          name,
+          name:name.toLowerCase(),
           type,
           description,
           discount,

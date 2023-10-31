@@ -5,6 +5,7 @@ import { BiDownload, BiEdit, BiTrash, BiZoomIn } from 'react-icons/bi';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { all } from 'axios';
+import {toast,ToastContainer} from 'react-toastify';
 import { AdminAllCustomers, AdminDeleteCustomerOrders, AdminGetUserInfo } from '../../actions/Admin/AdminAction';
 
 const Customers = () => {
@@ -25,6 +26,10 @@ const Customers = () => {
       navigate('/admin-login');
     }
   }, [authenticate])
+
+  const successToast=(msg)=>{
+    toast(msg,{position:'top-center'});
+  }
 
 
   useEffect(() => {
@@ -89,9 +94,9 @@ const Customers = () => {
           <AdminTopbar />
           <div className='flex flex-col pt-5 pl-5 pr-10'>
             <h1 className='font-dmsans text-lg font-semibold'>Cusotmers</h1>
-            <div className='w-full border rounded-lg mt-5 h-20 items-center flex pl-4 pt-4 pb-4'>
+            {/* <div className='w-full border rounded-lg mt-5 h-20 items-center flex pl-4 pt-4 pb-4'>
               <button className='border h-full w-[100px] rounded-md mr-3 flex justify-center items-center text-sm'><span className='mr-2 rotate-180'><BiDownload size={15} /></span> Export</button>
-            </div>
+            </div> */}
             <div className='w-full border rounded-lg mt-5 h-20 items-center flex pl-4 pt-4 pb-4 pr-5'>
               <input onChange={(e)=>{searchCustomer(e.target.value)}} type="text" placeholder='Search by name/email/phone' className='border rounded-lg w-full border-[#1a1a1d45] text-sm h-12 pl-4 active:border-[#1a1a1d45]' />
             </div>
@@ -144,6 +149,7 @@ const Customers = () => {
                             <span className='mb-2 cursor-pointer hover:scale-110 duration-300 transition-all' onClick={() => { navigate(`/admin-user-info/${customer?._id}`) }}><BiZoomIn size={20} className='mr-2' color='gray' /></span>
                             <span className='mb-2 cursor-pointer hover:scale-110 duration-300 transition-all'><BiEdit size={20} className='mr-2' color='gray' /></span>
                             <span className='mb-2 cursor-pointer hover:scale-110 duration-300 transition-all' onClick={() => {
+                              successToast("Deleting Customer Please Wait")
                               deleteCustomer(customer?._id);
                             }}><BiTrash size={20} color='darkred' /></span>
                           </td>
@@ -172,6 +178,7 @@ const Customers = () => {
           </div>
         </div>
       </div>
+      <ToastContainer/>
     </>
   )
 }

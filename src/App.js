@@ -23,6 +23,7 @@ import AddGiftBox from './pages/Admin/AddGiftBox';
 import AdminGiftCard from './pages/Admin/AdminGiftCard';
 import AddGiftCard from './pages/Admin/AddGiftCard';
 import AdminSettings from './pages/Admin/Settings/AdminSettings';
+import ShowOrder from './pages/Admin/ShowOrder';
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
         <Route exact path={"/admin-attributes"} element={<AdminAttributes />} />
         <Route exact path={"/admin-giftbox"} element={<AdminGiftBox />} />
         <Route exact path={"/admin-giftcard"} element={<AdminGiftCard />} />
+        <Route exact path={"/show-order"} element={<ShowOrder />} />
       </Routes>
     </div>
   );
