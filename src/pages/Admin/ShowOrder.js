@@ -7,6 +7,7 @@ const ShowOrder = () => {
 
     const location = useLocation();
     const [order, setOrder] = useState(null);
+    const [orderType,setOrderType] = useState(null);
 
     const [name, setName] = useState(null);
     const [status, setStatus] = useState(null);
@@ -19,6 +20,21 @@ const ShowOrder = () => {
     const [zipcode, setZipCode] = useState(null);
     const [data, setData] = useState(null);
     const [totalPrice, setTotalPrice] = useState(null);
+
+    useEffect(()=>{
+        if(location.state.order.cartdata.length == 1){
+            setOrderType("buynow");
+        }else if(location.state.order.cartdata.length == 3){
+            setOrderType('gift');
+        }else if(location.state.order.customtext != undefined){
+            setOrderType('personal');
+        }else{
+            setOrderType('multiple')
+        }
+
+        console.log(location.state.order.cartdata)
+
+    },[])
 
     useEffect(() => {
         if (location.state.order) {
@@ -34,7 +50,6 @@ const ShowOrder = () => {
             setPaymentMode(location.state.order.paymentmode)
             setStatus(location.state.order.status)
         }
-        console.log(order, 'order');
     }, [location.state.order])
 
     return (
@@ -63,7 +78,8 @@ const ShowOrder = () => {
                             <p className='w-full flex'>Status - {status}</p>
 
                             <h1 className='font-dmsans w-full flex text-lg mb-1 mt-4'>Order Details:</h1>
-                            <div className='flex flex-col items-start'>
+                            {orderType == "buynow" || orderType == "multiple" &&
+                                <div className='flex flex-col items-start'>
                                 {data?.map((d, key) => (
                                     <div className='flex mb-2'>
                                         <div className='w-20 h-20 shadow mr-5'>
@@ -75,6 +91,34 @@ const ShowOrder = () => {
                                     </div>
                                 ))}
                             </div>
+                            }
+                            {orderType == "gift" &&
+                                <div className='flex flex-col items-start'>
+                                {data?.map((d, key) => (
+                                    <div className='flex mb-2'>
+                                        <div className='w-20 h-20 shadow mr-5'>
+                                            <img className='shadow w-full h-full' src={d?.box?.images[0]?.img || d?.product?.images[0]?.img || d?.card?.images[0]?.img} alt="" />
+                                        </div>
+                                        <div className='flex flex-col'>
+                                                <p>{d?.box?.name || d?.product?.name || d?.card?.name} x {1}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            }
+                            {orderType == "personal" &&
+                                <div className='flex flex-col items-start'>
+                                    <div className='flex mb-2'>
+                                        <div className='w-20 h-20 shadow mr-5'>
+                                            <img className='shadow w-full h-full' src={data.images[0].img} alt="" />
+                                        </div>
+                                        <div className='flex flex-col'>
+                                                <p>{data.name} x {1}</p>
+                                        </div>
+                                    </div>
+                            </div>
+                            }
+
                         </div>
                     </div>
                 </div>
