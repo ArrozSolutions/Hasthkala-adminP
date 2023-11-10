@@ -1,5 +1,5 @@
 import axios from "../../helpers/axios";
-import { addToCartConstants, adminAllCategoryConstant, adminAllCategoryParentConstant, adminAllOrdersConstant, adminAllProductConstant, adminCreateCategoryConstants, adminCreateProductConstants, adminCustomersConstants, adminDashboardConstant, adminDeleteCategoryConstants, adminDeleteCustomerConstants, adminDeleteProductConstants, adminDeleteRecentOrderConstants, adminGetUserInfoConstants, adminRecentOrderConstants, changeStatusConstant, createAttributeConstant, createCouponConstant, createGiftBoxConstant, createGiftCardConstant, deleteAttributeConstant, deleteCouponConstant, deleteGiftBoxConstant, deleteGiftCardConstant, getAttributeConstant, getCartDataConstants, getCouponConstant, getGiftBoxConstant, getGiftCardConstant, getSavedConstants, quantityEditConstants, removeCartDataConstants, removeSavedDataConstants, saveConstants } from "../../constant/constant";
+import { addToCartConstants, adminAllCategoryConstant, adminAllCategoryParentConstant, adminAllOrdersConstant, adminAllProductConstant, adminCreateCategoryConstants, adminCreateProductConstants, adminCustomersConstants, adminDashboardConstant, adminDeleteCategoryConstants, adminDeleteCustomerConstants, adminDeleteProductConstants, adminDeleteRecentOrderConstants, adminGetUserInfoConstants, adminRecentOrderConstants, changeStatusConstant, createAttributeConstant, createCouponConstant, createGiftBoxConstant, createGiftCardConstant, deleteAttributeConstant, deleteCouponConstant, deleteGiftBoxConstant, deleteGiftCardConstant, deleteNotificationsConstant, getAttributeConstant, getCartDataConstants, getCouponConstant, getGiftBoxConstant, getGiftCardConstant, getNotificationsConstant, getSavedConstants, quantityEditConstants, removeCartDataConstants, removeSavedDataConstants, saveConstants } from "../../constant/constant";
 
 
 export const AdminCreateProduct = (productObj) => {
@@ -558,6 +558,8 @@ export const createGiftCardAction = (giftcardObj) => {
   };
 };
 
+
+
 export const getGiftCardAction = (skip) => {
   return async (dispatch) => {
     dispatch({ type: getGiftCardConstant.GET_GIFTCARDS_REQUEST});
@@ -576,4 +578,40 @@ export const getGiftCardAction = (skip) => {
     }
   };
 };
+
+export const getNotifications = () => {
+  return async (dispatch) => {
+    dispatch({ type: getNotificationsConstant.GET_NOTIFICATION_REQUEST});
+    const res = await axios.get('/admin-notifications')
+    if (res.status === 200) {
+      const { notifications,totalnotifications} = res.data;
+      dispatch({
+        type:getNotificationsConstant.GET_NOTIFICATION_SUCCESS,
+        payload: {
+          notifications,
+          totalnotifications
+        },
+      });
+    }
+  };
+};
+
+export const deleteNotifications = (nid) => {
+  return async (dispatch) => {
+    dispatch({ type: deleteNotificationsConstant.DELETE_NOTIFICATION_REQUEST});
+    const res = await axios.post('/admin-delete-notifications',{
+      nid
+    })
+    if (res.status === 200) {
+      const { message} = res.data;
+      dispatch({
+        type:deleteNotificationsConstant.DELETE_NOTIFICATION_SUCCESS,
+        payload: {
+          message
+        },
+      });
+    }
+  };
+};
+
 

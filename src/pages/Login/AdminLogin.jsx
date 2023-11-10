@@ -187,10 +187,10 @@ const AdminLogin = () => {
                 </div>
                 <div className='pl-10 pr-10 pt-6'>
                   <label className='text-sm font-dmsans text-left w-full flex' htmlFor="">Email Address</label>
-                  <input type="text" className='border border-[#1a1a1d52] w-full h-11 mt-1 mb-4 text-sm text-gray pl-5 rounded' onChange={(e) => { setEmail(e.target.value) }} required />
+                  <input type="text" className='border border-[#1a1a1d52] w-full h-11 mt-1 mb-4 text-sm text-gray pl-5 rounded-full' onChange={(e) => { setEmail(e.target.value) }} required />
                   <label className='text-sm font-dmsans text-left w-full flex' htmlFor="">Password</label>
-                  <input type="password" className='border border-[#1a1a1d52] w-full h-11 mt-1 text-sm text-gray pl-5 rounded' onChange={(e) => { setPassword(e.target.value) }} required />
-                  <button className='w-full h-11 bg-darkred font-dmsans uppercase text-[#ffffff] mt-5 rounded flex items-center justify-center' type='submit'>{loading ? <Spinner /> : `Sign In`}</button>
+                  <input type="password" className='border border-[#1a1a1d52] w-full h-11 mt-1 text-sm text-gray pl-5 rounded-full' onChange={(e) => { setPassword(e.target.value) }} required />
+                  <button className='w-full h-11 bg-darkred font-dmsans uppercase text-[#ffffff] mt-5 rounded-full flex items-center justify-center' type='submit'>{loading ? <Spinner /> : `Sign In`}</button>
 
                 </div>
               </form>
@@ -208,14 +208,14 @@ const AdminLogin = () => {
                 <div className='text-pink w-full h-14 text-xl flex items-center font-semibold'>
                   <span className='cursor-pointer h-full w-1/2 flex justify-center items-center border-b-2 border-red-500 text-red-600' onClick={toggleMobileSignIn}>Sign In</span>
                 </div>
-                <div className='pl-10 pr-10 pt-6'>
-                  <label className='text-sm font-dmsans' htmlFor="">Mobile Number</label>
+                <div className='pl-10 pr-10 pt-10'>
+                  <label className=' flex text-sm font-dmsans' htmlFor="">Mobile Number</label>
                   <div className='relative items-center justify-start'>
                     <p className='absolute text-gray flex h-12 text-[16px] pl-2 items-center'>+91</p>
-                    <input type="text" className='border border-[#1a1a1d52] w-full h-12 mt-1 mb-4  text-gray pl-10 rounded flex items-center' maxLength={10} onChange={(e) => { setPhone(e.target.value) }}  />
+                    <input type="text" className='border border-[#1a1a1d52] w-full h-12 mt-1 mb-4  text-gray pl-10 rounded-full flex items-center' maxLength={10} onChange={(e) => { setPhone(e.target.value) }}  />
                   </div>
-                  <button className='w-full h-11 bg-darkred font-dmsans uppercase text-[#ffffff] mt-5 rounded flex items-center justify-center' onClick={loginUserWithMobileNumber} type='submit'>{loading ? <Spinner /> : `Sign In`}</button>
-                  <div className='text-[13px] font-dmsans mt-3'>Login using <span onClick={toggleEmailSignIn} className='text-[#25baff] cursor-pointer'>Password</span></div>
+                  <button className='w-full h-11 bg-darkred font-dmsans uppercase text-[#ffffff] mt-6 rounded-full flex items-center justify-center' onClick={loginUserWithMobileNumber} type='submit'>{loading ? <Spinner /> : `Sign In`}</button>
+                  <div className='flex text-[13px] font-dmsans mt-3'>Login using <span onClick={toggleEmailSignIn} className='text-[#25baff] cursor-pointer'>Password</span></div>
                 </div>
               </div>
 
@@ -240,8 +240,8 @@ const AdminLogin = () => {
                     <span>Verification Code</span>
                     <span className='text-[#379bff] cursor-pointer'>Resend Code</span>
                   </label>
-                  <input type="text" className='border border-[#1a1a1d52] w-full h-11 mt-1 text-sm text-gray pl-5 rounded' onChange={(e) => { setVerificationCode(e.target.value) }} required />
-                  <button className='w-full h-11 bg-darkred font-dmsans uppercase text-[#ffffff] mt-5 rounded flex items-center justify-center' type='submit'>{loading ? <Spinner /> : `Verify me`}</button>
+                  <input type="text" className='border border-[#1a1a1d52] w-full h-11 mt-1 text-sm text-gray pl-5 rounded-full' onChange={(e) => { setVerificationCode(e.target.value) }} required />
+                  <button className='w-full h-11 bg-darkred font-dmsans uppercase text-[#ffffff] mt-5 rounded-full flex items-center justify-center' type='submit'>{loading ? <Spinner /> : `Verify me`}</button>
                 </div>
               </form>
 
@@ -264,8 +264,8 @@ const AdminLogin = () => {
                     <span>Verification Code</span>
                     <span className='text-[#379bff] cursor-pointer'>Resend Code</span>
                   </label>
-                  <input type="text" className='border border-[#1a1a1d52] w-full h-11 mt-1 text-sm text-gray pl-5 rounded' onChange={(e) => { setEmailVerificationCode(e.target.value) }} required />
-                  <button className='w-full h-11 bg-darkred font-dmsans uppercase text-[#ffffff] mt-5 rounded flex items-center justify-center' type='submit'>{loading ? <Spinner /> : `Verify me`}</button>
+                  <input type="text" className='border border-[#1a1a1d52] w-full h-11 mt-1 text-sm text-gray pl-5 rounded-full' onChange={(e) => { setEmailVerificationCode(e.target.value) }} required />
+                  <button className='w-full h-11 bg-darkred font-dmsans uppercase text-[#ffffff] mt-5 rounded-full flex items-center justify-center' type='submit'>{loading ? <Spinner /> : `Verify me`}</button>
                 </div>
               </form>
 
